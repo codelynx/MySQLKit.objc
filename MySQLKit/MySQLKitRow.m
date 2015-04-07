@@ -20,6 +20,7 @@
 {
 	MySQLKitResult *_result;
 	NSDictionary *_dictionary;
+	NSArray *_columns;
 }
 
 @end
@@ -33,20 +34,12 @@
 
 @implementation MySQLKitRow
 
-- (id)initWithResult:(MySQLKitResult *)result row:(MYSQL_ROW)row lengths:(unsigned long *)lengths
+- (id)initWithResult:(MySQLKitResult *)result dictionary:(NSDictionary *)dictionary columns:(NSArray *)columns
 {
 	if (self = [super init]) {
 		_result = result;
-		NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-		for (MySQLKitColumn *column in _result.columns) {
-			NSString *name = column.name;
-			NSInteger index = column.index;
-			const char *pointer = row[index];
-			unsigned long length = lengths[index];
-			id value = [column valueFromPointer:pointer length:length];
-			[dictionary setValue:value forKey:name];
-		}
 		_dictionary = dictionary;
+		_columns = columns;
 	}
 	return self;
 }
@@ -68,6 +61,15 @@
 - (id)objectForKeyedSubscript:(id <NSCopying>)key;
 {
 	return _dictionary[key];
+}
+
+- (id)objectAtIndexedSubscript:(NSUInteger)index
+{
+	if (index < _columns.count) {
+		MySQLKitColumn *column = _columns[index];
+		return _dictionary[column.name];
+	}
+	return nil;
 }
 
 @end

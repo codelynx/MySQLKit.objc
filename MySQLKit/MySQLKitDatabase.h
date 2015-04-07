@@ -33,10 +33,10 @@
 - (BOOL)connected;
 - (NSString *)errorMessage;
 
-- (MySQLKitQuery *)prepareQuery:(NSString *)string;
-- (MySQLKitQuery *)prepareQueryWithFormat:(NSString *)format, ...;
+- (MySQLKitQuery *)queryWithString:(NSString *)string;
+- (MySQLKitQuery *)queryWithFormat:(NSString *)format, ...;
 
-- (MySQLKitResult *)executeQuery:(NSString *)string;
+- (MySQLKitResult *)executeQueryWithString:(NSString *)string;
 - (MySQLKitResult *)executeQueryWithFormat:(NSString *)format, ...;
 
 - (void)reportError;

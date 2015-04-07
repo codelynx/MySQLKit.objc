@@ -16,12 +16,13 @@
 //
 
 @interface MySQLKitColumn ()
-
-@property (weak) MySQLKitResult *result;
-@property (copy) NSString *name;
-@property (assign) enum enum_field_types fieldType;
-@property (assign) unsigned int flags;
-@property (assign) NSInteger index;
+{
+	MySQLKitResult *_result;
+	NSString *_name;
+	enum enum_field_types _fieldType;
+	unsigned int _flags;
+	NSInteger _index;
+}
 
 @end
 
@@ -35,11 +36,11 @@
 - (id)initWithResult:(MySQLKitResult *)result field:(MYSQL_FIELD)field index:(NSInteger)index
 {
 	if (self = [super init]) {
-		self.result = result;
-		self.name = [NSString stringWithUTF8String:field.name];
-		self.fieldType = field.type;
-		self.flags = field.flags;
-		self.index = index;
+		_result = result;
+		_name = [NSString stringWithUTF8String:field.name];
+		_fieldType = field.type;
+		_flags = field.flags;
+		_index = index;
 	}
 	return self;
 }
@@ -50,18 +51,18 @@
 
 - (NSInteger)type
 {
-	return (NSInteger)self.fieldType;
+	return (NSInteger)_fieldType;
 }
 
 - (BOOL)isBinary
 {
-	return self.flags & BINARY_FLAG;
+	return _flags & BINARY_FLAG;
 }
 
 - (id)valueFromPointer:(const char *)pointer length:(unsigned long)length
 {
 	NSString *string = [NSString stringWithUTF8String:pointer];
-	switch (self.fieldType) {
+	switch (_fieldType) {
 	case MYSQL_TYPE_DECIMAL: case MYSQL_TYPE_NEWDECIMAL:
 		return [NSDecimalNumber decimalNumberWithString:string];
 	case MYSQL_TYPE_TINY: case MYSQL_TYPE_SHORT: case MYSQL_TYPE_LONG: case MYSQL_TYPE_INT24:

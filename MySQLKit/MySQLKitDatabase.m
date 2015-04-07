@@ -90,23 +90,23 @@
 	[self disconnect];
 }
 
-- (MySQLKitQuery *)prepareQuery:(NSString *)string
+- (MySQLKitQuery *)queryWithString:(NSString *)string
 {
 	return [[MySQLKitQuery alloc] initWithDatabase:self query:string];
 }
 
-- (MySQLKitQuery *)prepareQueryWithFormat:(NSString *)format, ...
+- (MySQLKitQuery *)queryWithFormat:(NSString *)format, ...
 {
 	va_list args;
 	va_start(args, format);
 	NSString *string = [NSString stringWithFormat:format, args];
 	va_end(args);
-	return [self prepareQuery:string];
+	return [self queryWithString:string];
 }
 
-- (MySQLKitResult *)executeQuery:(NSString *)string
+- (MySQLKitResult *)executeQueryWithString:(NSString *)string
 {
-	return [[self prepareQuery:string] execute];
+	return [[self queryWithString:string] execute];
 }
 
 - (MySQLKitResult *)executeQueryWithFormat:(NSString *)format, ...
@@ -115,7 +115,8 @@
 	va_start(args, format);
 	NSString *string = [NSString stringWithFormat:format, args];
 	va_end(args);
-	return [self executeQuery:string];
+
+	return [self executeQueryWithString:string];
 }
 
 

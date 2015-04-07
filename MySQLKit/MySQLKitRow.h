@@ -19,6 +19,6 @@
 @property (readonly) NSDictionary *dictionary;
 
 - (id)objectForKeyedSubscript:(id <NSCopying>)key;
-
+- (id)objectAtIndexedSubscript:(NSUInteger)index;
 
 @end

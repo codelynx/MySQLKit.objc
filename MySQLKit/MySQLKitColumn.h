@@ -15,7 +15,7 @@
 
 @interface MySQLKitColumn : NSObject
 
-@property (copy, readonly) NSString *name;
+@property (readonly) NSString *name;
 @property (readonly) NSInteger type;
 @property (readonly) NSInteger index;
 

@@ -19,7 +19,7 @@
 
 @interface MySQLKitRow (init)
 
-- (id)initWithResult:(MySQLKitResult *)query row:(MYSQL_ROW)row lengths:(unsigned long *)lengths;
+- (id)initWithResult:(MySQLKitResult *)result dictionary:(NSDictionary *)dictionary columns:(NSArray *)columns;
 
 @end
 
@@ -78,7 +78,17 @@
 		MYSQL_ROW row = mysql_fetch_row(_res);
 		if (row) {
 			unsigned long *lengths = mysql_fetch_lengths(_res);
-			return [[MySQLKitRow alloc] initWithResult:self row:row lengths:lengths];
+			NSArray *columns = self.columns;
+			NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+			for (MySQLKitColumn *column in columns) {
+				NSString *name = column.name;
+				NSInteger index = column.index;
+				const char *pointer = row[index];
+				unsigned long length = lengths[index];
+				id value = [column valueFromPointer:pointer length:length];
+				[dictionary setValue:value forKey:name];
+			}
+			return [[MySQLKitRow alloc] initWithResult:self dictionary:dictionary columns:columns];
 		}
 	}
 	return nil;

@@ -14,13 +14,7 @@
 #define CASE_RETURN_STRING(code) case code: return @"##code"
 
 
-//
-//	MySQLKit
-//
-
-@implementation MySQLKit
-
-+ (NSString *)stringFromState:(NSInteger)state
+NSString *NSStringFromMySQLState(NSInteger state)
 {
 	switch (state) {
 	CASE_RETURN_STRING(MYSQL_STMT_INIT_DONE);
@@ -30,6 +24,3 @@
 	default: return [NSString stringWithFormat:@"Unknown state=%zd", state];
 	}
 }
-
-@end
-

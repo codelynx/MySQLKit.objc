@@ -18,20 +18,11 @@ FOUNDATION_EXPORT const unsigned char MySQLKitVersionString[];
 
 // Following headers should not expose may raw mysql structure directory.
 
+extern NSString *NSStringFromMySQLState(NSInteger state);
+
+
 #import "MySQLKitDatabase.h"
 #import "MySQLKitQuery.h"
 #import "MySQLKitResult.h"
 #import	"MySQLKitRow.h"
 #import "MySQLKitColumn.h"
-
-
-//
-//	MySQLKitDatabase
-//
-
-@interface MySQLKit : NSObject
-{
-}
-+ (NSString *)stringFromState:(NSInteger)state;
-
-@end
