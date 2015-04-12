@@ -30,29 +30,42 @@
 {
     [super setUp];
 
-	
 	self.database = [[MySQLKitDatabase alloc] init];
 	
-	self.database.socket = @"/Applications/MAMP/tmp/mysql/mysql.sock";
-	self.database.userName = @"root";
-	self.database.password = @"root";
-	self.database.port = 8889;
-	XCTAssert(self.database.connect);
-	
-	[self.database executeQuery:@"CREATE DATABASE IF NOT EXISTS MYSQLKIT;"];
-	[self.database reportError];
+#if 0
+	if ([self.database connectWithSocket:@"/Applications/MAMP/tmp/mysql/mysql.sock" username:@"root" password:@"root" database:nil]) {
+		[self.database executeQueryWithString:@"CREATE DATABASE IF NOT EXISTS MYSQLKIT;"];
+		[self.database reportError];
 
-	[self.database executeQuery:@"USE MYSQLKIT;"];
-	[self.database reportError];
-	
-	[self.database executeQuery:@"DROP TABLE IF EXISTS `Product`;"];
+		[self.database executeQueryWithString:@"USE MYSQLKIT;"];
+		[self.database reportError];
+		
+		[self.database executeQueryWithString:@"DROP TABLE IF EXISTS `product_table`;"];
+	}
+	else {
+		XCTFail(@"Connection failed");
+	}
+#else
+	if ([self.database connectWithHost:@"127.0.0.1" port:8889 username:@"root" password:@"root" database:nil]) {  // "localhost" not working to me [KY]
+		[self.database executeQueryWithString:@"CREATE DATABASE IF NOT EXISTS MYSQLKIT;"];
+		[self.database reportError];
+
+		[self.database executeQueryWithString:@"USE MYSQLKIT;"];
+		[self.database reportError];
+		
+		[self.database executeQueryWithString:@"DROP TABLE IF EXISTS `product_table`;"];
+	}
+	else {
+		XCTFail(@"Connection failed");
+	}
+#endif
 }
 
 - (void)tearDown
 {
     [super tearDown];
 
-//	[self.database executeQuery:@"DROP DATABASE MYSQLKIT;"];
+	[self.database executeQuery:@"DROP DATABASE MYSQLKIT;"];
 
 	[self.database disconnect];
 	self.database = nil;
@@ -61,7 +74,7 @@
 - (void)testBasicCreateTableInsertSelect
 {
 	NSLog(@"%s (%d)", __FUNCTION__, __LINE__);
-	[self.database executeQuery:@"CREATE TABLE `Product` ("
+	[self.database executeQueryWithString:@"CREATE TABLE `product_table` ("
 				@"`ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, "
 				@"`title` varchar(32), "
 				@"`price` decimal(10,2), "
@@ -69,8 +82,8 @@
 				@"PRIMARY KEY(`ID`)"
 				@") ENGINE=InnoDB DEFAULT CHARSET=utf8;"];
 
-	[self.database executeQuery:@"INSERT INTO `Product` (`title`, `price`, `binary`) VALUES ('Apple', '120', X'0102030405');"];
-	MySQLKitResult *result = [self.database executeQuery:@"SELECT * FROM PRODUCT;"];
+	[self.database executeQueryWithString:@"INSERT INTO `product_table` (`title`, `price`, `binary`) VALUES ('Apple', '120', X'0102030405');"];
+	MySQLKitResult *result = [self.database executeQueryWithString:@"SELECT * FROM `product_table`;"];
 	NSArray *rows = result.allObjects;
 	XCTAssert(rows.count == 1);
 	MySQLKitRow *row = rows.firstObject;

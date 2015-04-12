@@ -17,20 +17,15 @@
 
 @interface MySQLKitDatabase : NSObject
 
-@property (copy) NSString *socket;
-@property (copy) NSString *host;
-@property (copy) NSString *databaseName;
-@property unsigned int port;
-@property (copy) NSString *userName;
-@property (copy) NSString *password;
 @property (readonly) NSError *error;
 
+- (BOOL)connectWithSocket:(NSString *)socket username:(NSString *)username password:(NSString *)password database:(NSString *)database;
+- (BOOL)connectWithHost:(NSString *)host port:(unsigned int)port username:(NSString *)username password:(NSString *)password database:(NSString *)database;
 
-- (BOOL)connect;
 - (void)disconnect;
 //- (NSString *) r_escape:(NSString*)s; // escape simbols in the SQL string
 - (NSInteger)autoincrementID;
-- (BOOL)connected;
+- (BOOL)isConnected;
 - (NSString *)errorMessage;
 
 - (MySQLKitQuery *)queryWithString:(NSString *)string;

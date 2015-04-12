@@ -52,29 +52,52 @@
     mysql_library_end();
 }
 
-- (BOOL)connect
+- (BOOL)connectWithSocket:(NSString *)socket username:(NSString *)username password:(NSString *)password database:(NSString *)database
 {
-    _mysql = mysql_init(NULL);
-	
-	const char *host = self.host ? self.host.UTF8String : "localhost";
-	const char *user = self.userName ? self.userName.UTF8String : "";
-	const char *password = self.password ? self.password.UTF8String : "";
-	const char *database = self.databaseName ? self.databaseName.UTF8String : NULL;
-	unsigned int port = self.port ? self.port : 3306;
-	const char *socket = self.socket ? self.socket.UTF8String : NULL;
-	unsigned long flag = 0;
+	if (!_mysql) {
+		_mysql = mysql_init(NULL);
+		
+		const char *host = NULL;
+		unsigned int port = 0;
+		unsigned long flag = 0;
 
-    if(!mysql_real_connect(_mysql, host, user, password, database, port, socket, flag)) {
-		NSLog(@"mysql: %@", self.error);
-		return NO;
-    }
-	
-    if(!mysql_set_character_set(_mysql, "utf8")) {
-		NSLog(@"mysql: character set is %s.", mysql_character_set_name(_mysql));
+		if(!mysql_real_connect(_mysql, host, username.UTF8String, password.UTF8String, database.UTF8String, port, socket.UTF8String, flag)) {
+			NSLog(@"mysql: %@", self.error);
+			mysql_close(_mysql), _mysql = nil;
+			return NO;
+		}
+
+		NSLog(@"mysql: connected to %s", socket.UTF8String);
+		if(!mysql_set_character_set(_mysql, "utf8")) {
+			NSLog(@"mysql: character set is %s.", mysql_character_set_name(_mysql));
+		}
+
+		self.thread = [NSThread currentThread];
 	}
+	return YES;
+}
 
-	self.thread = [NSThread currentThread];
+- (BOOL)connectWithHost:(NSString *)host port:(unsigned int)port username:(NSString *)username password:(NSString *)password database:(NSString *)database
+{
+	if (!_mysql) {
+		_mysql = mysql_init(NULL);
+		
+		const char *socket = NULL;
+		unsigned long flag = 0;
 
+		if(!mysql_real_connect(_mysql, host.UTF8String, username.UTF8String, password.UTF8String, database.UTF8String, port, socket, flag)) {
+			NSLog(@"mysql: %@", self.error);
+			mysql_close(_mysql), _mysql = nil;
+			return NO;
+		}
+
+		NSLog(@"mysql: connected to %s:%ud", host.UTF8String, port);
+		if(!mysql_set_character_set(_mysql, "utf8")) {
+			NSLog(@"mysql: character set is %s.", mysql_character_set_name(_mysql));
+		}
+
+		self.thread = [NSThread currentThread];
+	}
 	return YES;
 }
 
@@ -144,13 +167,14 @@
 	return [NSString stringWithUTF8String:mysql_error(_mysql)];
 }
 
-- (BOOL)connected
+- (BOOL)isConnected
 {
 	return mysql_stat(_mysql) ? YES : NO;
 }
 
 - (NSInteger)autoincrementID
 {
+	NSParameterAssert(_mysql);
 	NSInteger result = mysql_insert_id(_mysql);
 	return result;
 }

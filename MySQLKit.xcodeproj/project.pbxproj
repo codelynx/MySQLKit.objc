@@ -16,10 +16,8 @@
 		CC013A7E1AC0A35A00172CE6 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC013A7D1AC0A35A00172CE6 /* libc++.dylib */; };
 		CC74E6E31AC1247C00DFE733 /* MySQLKitQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = CC74E6E11AC1247C00DFE733 /* MySQLKitQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC74E6E41AC1247C00DFE733 /* MySQLKitQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = CC74E6E21AC1247C00DFE733 /* MySQLKitQuery.m */; };
-		CC74E6E51AC1247C00DFE733 /* MySQLKitQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = CC74E6E21AC1247C00DFE733 /* MySQLKitQuery.m */; };
 		CC74E6E81AC12DB200DFE733 /* MySQLKitRow.h in Headers */ = {isa = PBXBuildFile; fileRef = CC74E6E61AC12DB200DFE733 /* MySQLKitRow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC74E6E91AC12DB200DFE733 /* MySQLKitRow.m in Sources */ = {isa = PBXBuildFile; fileRef = CC74E6E71AC12DB200DFE733 /* MySQLKitRow.m */; };
-		CC74E6EA1AC12DB200DFE733 /* MySQLKitRow.m in Sources */ = {isa = PBXBuildFile; fileRef = CC74E6E71AC12DB200DFE733 /* MySQLKitRow.m */; };
 		CC8A81561AC3E241007F2D70 /* MySQLKit.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8A81551AC3E241007F2D70 /* MySQLKit.m */; };
 		CC8A81591AC3F067007F2D70 /* MySQLKitResult.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8A81571AC3F067007F2D70 /* MySQLKitResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC8A815A1AC3F067007F2D70 /* MySQLKitResult.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8A81581AC3F067007F2D70 /* MySQLKitResult.m */; };
@@ -286,8 +284,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC74E6E51AC1247C00DFE733 /* MySQLKitQuery.m in Sources */,
-				CC74E6EA1AC12DB200DFE733 /* MySQLKitRow.m in Sources */,
 				CC013A6C1AC0A01100172CE6 /* MySQLKitTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

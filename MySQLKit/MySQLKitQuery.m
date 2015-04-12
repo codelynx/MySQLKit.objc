@@ -71,7 +71,6 @@
 - (MySQLKitResult *)execute
 {
 	@synchronized (self) {
-		
 		NSParameterAssert(_database.thread == [NSThread currentThread]);
 		if (!mysql_query(_database.mysql, _queryString.UTF8String)) {
 			MYSQL_RES *res = mysql_use_result(_database.mysql);
