@@ -88,7 +88,6 @@
 				id value = [column valueFromPointer:pointer length:length];
 				[dictionary setValue:value forKey:name];
 			}
-			mysql_free_result(_res), _res = nil;
 			return [[MySQLKitRow alloc] initWithResult:self dictionary:dictionary columns:columns];
 		}
 	}
